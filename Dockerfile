@@ -21,7 +21,9 @@ RUN yum -y update && \
     yum clean all && \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
     echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    sed -i 's/Defaults    requiretty/#Defaults    requiretty/g' /etc/sudoers && \
+    # sed -i 's/Defaults    requiretty/#Defaults    requiretty/g' /etc/sudoers && \
+    sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && \
+    sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config && \
     useradd -u 1000 -G users,wheel -d /home/user --shell /bin/bash -m user && \
     usermod -p "*" user
 
